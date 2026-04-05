@@ -164,6 +164,9 @@ class ExecTool(Tool):
             return "Error: Command blocked by safety guard (internal/private URL detected)"
 
         if self.restrict_to_workspace:
+            if cwd.startwith("../") or cwd.startswith("/"):
+                return "Error: command blocked by safety guard: working directory must be within workspace"
+
             if "..\\" in cmd or "../" in cmd:
                 return "Error: Command blocked by safety guard (path traversal detected)"
 
